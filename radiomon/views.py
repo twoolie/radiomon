@@ -1,17 +1,22 @@
-#!/usr/bin/env python
-from flask import *
-app = Flask(__name__)
-application = app
-import logging, sys
-logging.basicConfig(stream=sys.stderr)
-import MySQLdb, MySQLdb.cursors
-import datetime
-from collections import defaultdict
-import ConfigParser
-config = ConfigParser.ConfigParser()
-config.read(app.root_path + "/radiomon.conf")
+from django.shortcuts import render
+from django.views.generic import ListView, DetailView, TemplateView
 
-@app.before_request
+from .models import Channel, Transmission
+
+#!/usr/bin/env python
+#from flask import *
+#app = Flask(__name__)
+#application = app
+import logging, sys
+#logging.basicConfig(stream=sys.stderr)
+#import MySQLdb, MySQLdb.cursors
+#import datetime
+#from collections import defaultdict
+#import ConfigParser
+#config = ConfigParser.ConfigParser()
+#config.read(app.root_path + "/radiomon.conf")
+
+#@app.before_request
 def before_request():
 	g.conn = MySQLdb.connect(host=config.get("mysql","host"),
 			user=config.get("mysql","user"),
@@ -58,12 +63,16 @@ def render_day_view(day):
 		txs[hour].append(trans)
 	return render_template("day_view.html", day=day, datetime=datetime, gengraph=gengraph, txs=txs, txlist=txlist)
 
-@app.route('/')
-def index():
-	g.cursor.execute("select distinct SUBSTRING(datetime,1,8) as date from transmissioninfo order by date asc")
-	res = g.cursor.fetchall()
-	recdays = map(lambda x: x['date'] , res)
-	return render_template("index.html", recdays=recdays, render_day_view=render_day_view)
+
+def DayList(BaseDayArchiveView):
+	""" This should be the new Index """
+
+def channel_index(request, channel_sn, **kwargs):
+	recordings = Transmission.objects\
+		.filter(channel__short_name=channel_sn)
+	recdays = recordings.dates('start_time','day','ASC')
+	return render(request,"index.html", {"Recordings": recordings})
+
 
 def realtime_to_seconds(realtime):
 	realtime = realtime.split(":")

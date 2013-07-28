@@ -1,2 +1,5 @@
 .DS_Store
+.idea/
 radiomon.conf
+*.py[oc]
+example_project/settings.py

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="{{ LANG|default:"en" }}">
+	<head>
+		<title>{% block title %}RadioMon Example Project{% endblock %}</title>
+		<link type="stylesheet" href="base.css">
+		{% block css-extra %}{% endblock %}
+		<script src="{% s %}"></script>
+		{% block css-extra %}{% endblock %}
+	</head>
+	<body>
+		{% block header %}{% endblock %}
+		{% block content %}{% endblock %}
+		{% block footer %}{% endblock %}
+	</body>
+</html>

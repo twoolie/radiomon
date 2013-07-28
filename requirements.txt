@@ -1,0 +1,5 @@
+django>=1.5,<1.6
+south
+surlex
+
+PyAudio>=0.2.7,<0.3.0
